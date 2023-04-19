@@ -12,13 +12,13 @@ import Shop from "../pages/Shop";
 
 const Basket = () => {
   const navigate = useNavigate();
-  const [count, setCount] = useState(1);
   let [basket, setBasket] = useState(
     JSON.parse(localStorage.getItem("basket"))
   );
 
   //functions
 
+  //total price
   const totalPrice = () => {
     let total = basket.reduce(
       (total, product) => total + product.price * product.count.toFixed(2),
@@ -103,7 +103,6 @@ const Basket = () => {
                           className="form-check-input"
                           type="checkbox"
                           value=""
-                          id="flexCheckDefault"
                         />
                         <label
                           className="form-check-label"
@@ -158,7 +157,8 @@ const Basket = () => {
               <h3 id="totalPrice">
                 Total Price:
                 {basket.reduce(
-                  (total, product) => total + product.price * product.count,
+                  (total, product) =>
+                    total + product.price * product.count.toFixed(2),
                   0
                 )}
               </h3>

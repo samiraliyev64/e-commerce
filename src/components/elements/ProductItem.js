@@ -16,10 +16,26 @@ function ProductItem() {
     JSON.parse(localStorage.getItem("basket")) || []
   );
 
+  let [wishlist, setWishlist] = useState(
+    JSON.parse(localStorage.getItem("wishlist")) || []
+  );
+
+  function addWishlist(currentProduct) {
+    let existingProduct = wishlist.find(
+      (product) => product.id === currentProduct.id
+    );
+    if (existingProduct) {
+      setWishlist([...wishlist]);
+    } else {
+      setWishlist([...wishlist, { ...currentProduct, inWishlist: true }]);
+    }
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }
   function addToCart(currentProduct) {
     let existingProduct = basket.find(
       (product) => product.id === currentProduct.id
     );
+
     if (existingProduct) {
       existingProduct.count++;
       setBasket([...basket]);
@@ -27,8 +43,8 @@ function ProductItem() {
       setBasket([...basket, { ...currentProduct, count: 1 }]);
     }
     localStorage.setItem("basket", JSON.stringify(basket));
-    console.log("basket", basket);
   }
+
   return (
     <div>
       {products.map((product) => (
@@ -38,6 +54,7 @@ function ProductItem() {
           <p>{product.description}</p>
           <p>${product.price}</p>
           <div className="text-center counter pb-3 pt-3">
+            <button onClick={() => addWishlist(product)}>Add Wishlist</button>
             <ShoppingCartOutlined
               className="basket-icon"
               onClick={() => addToCart(product)}
